@@ -284,6 +284,16 @@ module Fedex
                   }
                 end
                 # DangerousGoodsDetail goes here
+                if package[:special_services_requested][:dangerous_goods_detail]
+                  xml.DangerousGoodsDetail {
+                    hash_to_xml(xml, package[:special_services_requested][:dangerous_goods_detail])
+                  }
+                end
+                if package[:special_services_requested][:battery_details]
+                  xml.BatteryDetails {
+                    hash_to_xml(xml, package[:special_services_requested][:battery_details])
+                  }
+                end
                 if package[:special_services_requested][:dry_ice_weight]
                   xml.DryIceWeight{
                     xml.Units package[:special_services_requested][:dry_ice_weight][:units]

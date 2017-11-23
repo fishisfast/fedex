@@ -9,6 +9,7 @@ module Fedex
       include Helpers
       include HTTParty
       format :xml
+      headers 'Content-Type' => 'application/xml'
       # If true the rate method will return the complete response from the Fedex Web Service
       attr_accessor :debug
       # Fedex Text URL

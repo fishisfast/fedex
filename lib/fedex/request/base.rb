@@ -10,6 +10,7 @@ module Fedex
       include HTTParty
       format :xml
       headers 'Content-Type' => 'application/xml'
+      ssl_version :TLSv1_2
       logger ::Logger.new(STDOUT), :debug, :curl if ENV['DEBUG'] == 'true'
       # If true the rate method will return the complete response from the Fedex Web Service
       attr_accessor :debug

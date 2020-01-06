@@ -55,7 +55,7 @@ module Fedex
         @credentials = credentials
         @shipper, @recipient, @packages, @service_type, @customs_clearance_detail, @debug = options[:shipper], options[:recipient], options[:packages], options[:service_type], options[:customs_clearance_detail], options[:debug]
         @origin = options[:origin]
-        @debug = ENV['DEBUG'] == 'true'
+        @debug ||= ENV['DEBUG'] == 'true'
         @shipping_options =  options[:shipping_options] ||={}
         @payment_options = options[:payment_options] ||={}
         requires!(@payment_options, :type, :account_number, :name, :company, :phone_number, :country_code) if @payment_options.length > 0
@@ -169,6 +169,12 @@ module Fedex
       # Add recipient to xml request
       def add_recipient(xml)
         xml.Recipient{
+          if @recipient[:tax_id_number].present?
+            xml.Tins {
+              xml.TinType @recipient[:tax_id_type]
+              xml.Number @recipient[:tax_id_number]
+            }
+          end
           xml.Contact{
             xml.PersonName @recipient[:name]
             xml.CompanyName @recipient[:company]

@@ -150,7 +150,11 @@ module Fedex
             add_requested_shipment(xml)
           }
         end
-        builder.doc.root.to_xml
+        request_xml = builder.doc.root.to_xml
+
+        puts request_xml if @debug
+
+        request_xml
       end
 
       def service

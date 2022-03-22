@@ -2,7 +2,7 @@
 I plan a major refactor to this gem. Sorry but at this moment I am not merging PR's. I appreciate your effort but need some time to catch up. Thanks!! 
 
 # Fedex Rate Web Service
-## Fedex API Shipment Version: 21
+## Fedex API Shipment Version: 26
 
 For more information visit [Fedex Web Services for Shipping](https://www.fedex.com/wpor/web/jsp/drclinks.jsp?links=wss/index.html).
 

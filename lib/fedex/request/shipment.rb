@@ -47,9 +47,10 @@ module Fedex
           add_origin(xml) if @origin
           add_recipient(xml)
           add_shipping_charges_payment(xml)
-          add_special_services(xml) if @shipping_options[:return_reason] || @shipping_options[:cod] || @shipping_options[:saturday_delivery]
+          add_special_services(xml) if @shipping_options[:return_reason] || @shipping_options[:cod] || @shipping_options[:saturday_delivery] || @shipping_options[:etd]
           add_customs_clearance(xml) if @customs_clearance_detail
           add_custom_components(xml)
+          add_shipping_document_specification(xml) if @document_specification
           xml.RateRequestTypes "ACCOUNT"
           add_packages(xml)
         }
@@ -98,6 +99,22 @@ module Fedex
         }
       end
 
+      def add_shipping_document_specification(xml)
+        xml.ShippingDocumentSpecification {
+          xml.ShippingDocumentTypes @document_specification[:shipping_document_types]
+          if @document_specification[:commercial_invoice_detail]
+            xml.CommercialInvoiceDetail {
+              hash_to_xml(xml, @document_specification[:commercial_invoice_detail]) 
+              @document_specification[:commercial_invoice_detail][:customer_image_usages]&.each do |customer_image_usage|
+                xml.CustomerImageUsages {
+                  hash_to_xml(xml, customer_image_usage)
+                }
+              end
+            }
+          end
+        }
+      end
+
       def add_special_services(xml)
         xml.SpecialServicesRequested {
           if @shipping_options[:return_reason]
@@ -121,6 +138,13 @@ module Fedex
           end
           if @shipping_options[:saturday_delivery]
             xml.SpecialServiceTypes "SATURDAY_DELIVERY"
+          end
+           # Electronic Trade Documents (ETD) Details go here
+          if @shipping_options[:etd]
+            xml.SpecialServiceTypes "ELECTRONIC_TRADE_DOCUMENTS"
+            xml.EtdDetail {
+              hash_to_xml(xml, @shipping_options[:etd])
+            }
           end
         }
       end

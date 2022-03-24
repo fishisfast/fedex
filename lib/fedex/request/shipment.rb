@@ -100,6 +100,7 @@ module Fedex
       end
 
       def add_shipping_document_specification(xml)
+        # ToDo: Save and return this file with the label
         xml.ShippingDocumentSpecification {
           xml.ShippingDocumentTypes @document_specification[:shipping_document_types]
           if @document_specification[:commercial_invoice_detail]

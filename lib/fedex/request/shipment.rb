@@ -106,11 +106,6 @@ module Fedex
           if @document_specification[:commercial_invoice_detail]
             xml.CommercialInvoiceDetail {
               hash_to_xml(xml, @document_specification[:commercial_invoice_detail]) 
-              @document_specification[:commercial_invoice_detail][:customer_image_usages]&.each do |customer_image_usage|
-                xml.CustomerImageUsages {
-                  hash_to_xml(xml, customer_image_usage)
-                }
-              end
             }
           end
         }
